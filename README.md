@@ -1,11 +1,22 @@
 Microsoft COCO Caption Evaluation
 ===================
 
-Evaluation codes for MS COCO caption generation, modified for running on Python 3 only
+Evaluation codes for MS COCO caption generation, modified for running on Python 3
+
+- Some method calls are modified (such as .iteritems() method of defaultdict is changed to .items(), xrange() method is changed to range() ).
+- Temporary file writing is modified, contents of temporary files are encoded in utf-8.
+- Inter-process communications between main process and sub process is modified, it seems that subprocess.Popen of Python 2 and Python 3 behaves very differently.
+
+
+The code is tested with Python 3.6 and Python 2.7, and it seems that it is compatible with both Python 3.6 and Python 2.7.
+
+The '-cache' option in SPICE command is removed (because I didn't solve the cache problem)
+
+
 
 ## Requirements ##
 - java 1.8.0
-- python 3.6+
+- python 2.7 / python 3.6
 
 ## Files ##
 ./
