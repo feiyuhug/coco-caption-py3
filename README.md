@@ -12,6 +12,8 @@ The code is tested with Python 3.6 and Python 2.7, and it seems that it is compa
 
 TODO: There are 3 different versions of Stanford CoreNLP jars used (PTBTokenizer uses stanford-corenlp-3.4.1.jar, spice uses stanford-corenlp-3.6.0.jar, Chinese tokenizer uses stanford-segmenter-3.9.1.jar) considering using one version
 
+* When evaluating Chinese sentences, SPICE metric is inappropriate.
+
 ## Requirements ##
 - java 1.8.0
 - python 2.7 / python 3.6
