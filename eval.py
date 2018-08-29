@@ -16,6 +16,7 @@ from pycocoevalcap.eval import COCOEvalCap
 class StanfordTokenizer:
     """
     class for segmenting Chinese sentences
+    uses stanford segmenter 3.9.1
     """
     def __init__(self):
         stanford_corenlp_path = r'D:\Desktop\stanford corenlp'
