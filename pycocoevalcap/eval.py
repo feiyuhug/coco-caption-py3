@@ -8,14 +8,14 @@ from pycocoevalcap.spice.spice import Spice
 
 
 class COCOEvalCap:
-    def __init__(self, coco, cocoRes, cls_tokenizer=PTBTokenizer):
+    def __init__(self, coco, cocoRes, tokenizer):
         self.evalImgs = []
         self.eval = {}
         self.imgToEval = {}
         self.coco = coco
         self.cocoRes = cocoRes
         self.params = {'image_id': coco.getImgIds()}
-        self.Tokenizer = cls_tokenizer
+        self.tokenizer = tokenizer
 
     def evaluate(self):
         imgIds = self.params['image_id']
@@ -30,7 +30,7 @@ class COCOEvalCap:
         # Set up scorers
         # =================================================
         print('tokenization...')
-        tokenizer = self.Tokenizer()
+        tokenizer = self.tokenizer
         gts = tokenizer.tokenize(gts)
         res = tokenizer.tokenize(res)
 

@@ -38,7 +38,7 @@ class Meteor:
             stat = stat.decode('utf-8')
             eval_line += ' ||| {}'.format(stat)
 
-        line = '{}\n'.format(eval_line).encode('utf-8')
+        line = u'{}\n'.format(eval_line).encode('utf-8')
         self.meteor_p.stdin.write(line)
         self.meteor_p.stdin.flush()
 
@@ -57,7 +57,7 @@ class Meteor:
         hypothesis_str = hypothesis_str.replace('|||','').replace('  ',' ')
         score_line = ' ||| '.join(('SCORE', ' ||| '.join(reference_list), hypothesis_str))
 
-        line = '{}\n'.format(score_line).encode('utf-8')
+        line = u'{}\n'.format(score_line).encode('utf-8')
         self.meteor_p.stdin.write(line)
         self.meteor_p.stdin.flush()
 
@@ -72,7 +72,7 @@ class Meteor:
         stats = self.meteor_p.stdout.readline().strip()
         eval_line = 'EVAL ||| {}'.format(stats)
         # EVAL ||| stats
-        line = '{}\n'.format(eval_line).encode('utf-8')
+        line = u'{}\n'.format(eval_line).encode('utf-8')
         self.meteor_p.stdin.write(line)
         score = float(self.meteor_p.stdout.readline().strip())
         # bug fix: there are two values returned by the jar file, one average, and one all, so do it twice

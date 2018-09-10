@@ -2,6 +2,7 @@
 # requires python 2.7
 from __future__ import print_function
 
+import csv
 import sys
 import json
 import os
@@ -19,7 +20,9 @@ class StanfordTokenizer:
     uses stanford segmenter 3.9.1
     """
     def __init__(self):
-        stanford_corenlp_path = r'D:\Desktop\stanford corenlp'
+        print('stanford segmenter init...')
+        # stanford_corenlp_path = r'/media/mcislab/sdb1/home/mcislab/zwt/stanford_core_nlp'
+        stanford_corenlp_path = r"D:\Desktop\stanford corenlp"
         self.segmenter = StanfordSegmenter(
             java_class=r"edu.stanford.nlp.ie.crf.CRFClassifier",
             path_to_jar=os.path.join(stanford_corenlp_path, 'stanford-segmenter-2018-02-27', 'stanford-segmenter-3.9.1.jar'),
@@ -60,11 +63,13 @@ class StanfordTokenizer:
         return tokenized_captions_for_images
 
 
-def evaluation(annotation_file, result_file):
+def evaluate(annotation_file, result_file):
     coco = COCO(annotation_file)
     cocoRes = coco.loadRes(result_file)
-    # create cocoEval object by taking coco and cocoRes
-    cocoEval = COCOEvalCap(coco, cocoRes, cls_tokenizer=StanfordTokenizer)
+
+    tokenizer = StanfordTokenizer()     # for Chinese
+    # tokenizer = StanfordSegmenter()   # for English
+    cocoEval = COCOEvalCap(coco, cocoRes, tokenizer)
 
     # evaluate on a subset of images by setting
     # cocoEval.params['image_id'] = cocoRes.getImgIds()
@@ -75,19 +80,20 @@ def evaluation(annotation_file, result_file):
     # SPICE will take a few minutes the first time, but speeds up due to caching
     cocoEval.evaluate()
 
+    all_score = {}
     # print output evaluation scores
     for metric, score in cocoEval.eval.items():
-        print('%s: %.3f' % (metric, score))
+        print('%s: %.4f' % (metric, score))
+        all_score[metric] = score
 
-    # demo how to use evalImgs to retrieve low score result
-    # evals = [eva for eva in cocoEval.evalImgs if eva['CIDEr'] < 30]
-    # print('ground truth captions')
-    # imgId = evals[0]['image_id']
-    # annIds = coco.getAnnIds(imgIds=imgId)
-    # anns = coco.loadAnns(annIds)
-    # coco.showAnns(anns)
+    return all_score
+
+
+def main():
+    annotation_file = sys.argv[1]
+    result_file = sys.argv[2]
+    evaluate(annotation_file, result_file)
 
 
 if __name__ == '__main__':
-    evaluation(r"D:\Code\Sources\ML\coco-caption-py3\coco-caption-master\annotations\captions_val2014.json",
-               r"D:\Code\Sources\ML\coco-caption-py3\coco-caption-master\results\captions_val2014_fakecap_results.json")
+    main()
