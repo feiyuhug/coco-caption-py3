@@ -9,6 +9,7 @@ import os
 import re
 
 from nltk.tokenize.stanford_segmenter import StanfordSegmenter
+from pycocoevalcap.tokenizer.ptbtokenizer import PTBTokenizer
 
 from pycocotools.coco import COCO
 from pycocoevalcap.eval import COCOEvalCap
@@ -67,8 +68,8 @@ def evaluate(annotation_file, result_file):
     coco = COCO(annotation_file)
     cocoRes = coco.loadRes(result_file)
 
-    tokenizer = StanfordTokenizer()     # for Chinese
-    # tokenizer = StanfordSegmenter()   # for English
+    # tokenizer = StanfordTokenizer()     # for Chinese
+    tokenizer = PTBTokenizer()   # for English
     cocoEval = COCOEvalCap(coco, cocoRes, tokenizer)
 
     # evaluate on a subset of images by setting
